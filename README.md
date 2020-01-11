@@ -1,64 +1,68 @@
-## Что имеем
+## Установка
 
-* lumen (last version)
-* nginx (last version)
-* postgresql (last version)
-* php:7.2-fpm
-
-Контейнер собран по [следующей](https://www.digitalocean.com/community/tutorials/how-to-set-up-laravel-nginx-and-mysql-with-docker-compose) инструкции. Отступления касаются использования postgresql вместо mysql в качестве основной базы данных.
-
-## Запуск
-
-Выполняем команду:
+Клонируем репозиторий:
 ```
-docker-compose up -d
-```
-Успешный результат выполнения:
-```
-➜ docker-compose up -d
-Creating network "lumen-app_app-network" with driver "bridge"
-Creating webserver ... done
-Creating db        ... done
-Creating app       ... done
+➜ cd ~
+➜ git clone https://github.com/ivanchurkin/lumen-app
 ```
 
-Не забываем определить переменные окружения.
+Устанавливаем зависимости:
+```
+➜ cd ~/lumen-app
+➜ docker run --rm -v $(pwd)/source:/app composer install
+```
+
+Определяем переменные окружения:
+```
+➜ cp source/.env.example source/.env
+```
+
+В `source/.env` необходимо указать правильные значения переменных для успешного подключения к базе данных.
 
 ```
-cp .env.example .env
-```
-
-Для соединения с базой данных необходимо указать следующие значения:
-
-```
-...
 DB_CONNECTION=pgsql
 DB_HOST=db
 DB_PORT=5432
 DB_DATABASE=lumen
 DB_USERNAME=postgres
 DB_PASSWORD=secret
-...
 ```
 
-Далее открываем http://localhost и наблюдаем ошибку базы данных о несуществующей таблице users.
+Запускаем контейнер
+```
+➜ docker-compose up -d
+```
 
-Для решения "проблемы" выполняем:
+Если всё выполнилось успешно, то на http://localhost нас ждёт следующая ошибка:
+
+```
+SQLSTATE[42P01]: Undefined table: 7 ERROR: relation "users" does not exist LINE 1: SELECT * FROM users ^ (SQL: SELECT * FROM users)
+```
+
+Как видно из сообщения в базе нет таблицы `users`. Давайте добавим:
 
 ```
 ➜ docker-compose exec app php artisan migrate
+
+Migration table created successfully.
+Migrating: 2020_01_10_234101_create_users_table
+Migrated:  2020_01_10_234101_create_users_table (0.04 seconds)
 ```
 
-После:
+Так же заполним таблицу записями:
 
 ```
 ➜ docker-compose exec app php artisan db:seed
+
+Seeding: UsersTableSeeder
+Seeded:  UsersTableSeeder (0.28 seconds)
+Database seeding completed successfully.
 ```
 
-Результатом выполнения этих команд должна являться вновь созданная таблица users с двумя пользователями. Если всё получилось, то на странице http://localhost вы должны увидеть ответ с сервеа (массив пользователей).
+Снова перейдём на http://localhost и теперь увидим в ответе массив записей (пользователей) из таблицы `users`.
 
-## Послесловие
+## ToDo
 
 Нужно (по моему мнению):
-- пересмотреть организацию файловой структуры проекта выделить сам lumen в отдельную папку (например "src")
+
 - убрать из Dockerfile все ненужные зависимости (то что не используется и добавлять по мере необходимости)
