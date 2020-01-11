@@ -22,6 +22,25 @@ Creating db        ... done
 Creating app       ... done
 ```
 
+Не забываем определить переменные окружения.
+
+```
+cp .env.example .env
+```
+
+Для соединения с базой данных необходимо указать следующие значения:
+
+```
+...
+DB_CONNECTION=pgsql
+DB_HOST=db
+DB_PORT=5432
+DB_DATABASE=lumen
+DB_USERNAME=postgres
+DB_PASSWORD=secret
+...
+```
+
 Далее открываем http://localhost и наблюдаем ошибку базы данных о несуществующей таблице users.
 
 Для решения "проблемы" выполняем:
