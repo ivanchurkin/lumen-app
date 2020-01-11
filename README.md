@@ -1,24 +1,45 @@
-# Lumen PHP Framework
+## Что имеем
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+* lumen (last version)
+* nginx (last version)
+* postgresql (last version)
+* php:7.2-fpm
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+Контейнер собран по [следующей](https://www.digitalocean.com/community/tutorials/how-to-set-up-laravel-nginx-and-mysql-with-docker-compose) инструкции. Отступления касаются использования postgresql вместо mysql в качестве основной базы данных.
 
-## Official Documentation
+## Запуск
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+Выполняем команду:
+```
+docker-compose up -d
+```
+Успешный результат выполнения:
+```
+➜ docker-compose up -d
+Creating network "lumen-app_app-network" with driver "bridge"
+Creating webserver ... done
+Creating db        ... done
+Creating app       ... done
+```
 
-## Contributing
+Далее открываем http://localhost и наблюдаем ошибку базы данных о несуществующей таблице users.
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Для решения "проблемы" выполняем:
 
-## Security Vulnerabilities
+```
+➜ docker-compose exec app php artisan migrate
+```
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+После:
 
-## License
+```
+➜ docker-compose exec app php artisan db:seed
+```
 
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Результатом выполнения этих команд должна являться вновь созданная таблица users с двумя пользователями. Если всё получилось, то на странице http://localhost вы должны увидеть ответ с сервеа (массив пользователей).
+
+## Послесловие
+
+Нужно (по моему мнению):
+- пересмотреть организацию файловой структуры проекта выделить сам lumen в отдельную папку (например "src")
+- убрать из Dockerfile все ненужные зависимости (то что не используется и добавлять по мере необходимости)
