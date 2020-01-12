@@ -3,7 +3,7 @@
 * Nginx (latest)
 * PostgreSQL (latest)
 * PHP (7.2)
-* Lumen (latest)
+* Laravel (latest)
 
 ## Установка
 
@@ -40,33 +40,22 @@ DB_PASSWORD=secret
 ➜ docker-compose up -d
 ```
 
-Если всё выполнилось успешно, то на http://localhost нас ждёт следующая ошибка:
+Если всё выполнилось успешно, то на http://localhost нас ждёт предупреждение:
 
 ```
-SQLSTATE[42P01]: Undefined table: 7 ERROR: relation "users" does not exist LINE 1: SELECT * FROM users ^ (SQL: SELECT * FROM users)
+RuntimeException
+No application encryption key has been specified.
 ```
 
-Как видно из сообщения в базе нет таблицы `users`. Давайте добавим:
+На этой же странице можем нажать на кнопку `Generate app key` или выполнить команду:
 
 ```
-➜ docker-compose exec app php artisan migrate
+➜ docker-compose exec app php artisan key:generate
 
-Migration table created successfully.
-Migrating: 2020_01_10_234101_create_users_table
-Migrated:  2020_01_10_234101_create_users_table (0.04 seconds)
+Application key set successfully.
 ```
 
-Так же заполним таблицу записями:
-
-```
-➜ docker-compose exec app php artisan db:seed
-
-Seeding: UsersTableSeeder
-Seeded:  UsersTableSeeder (0.28 seconds)
-Database seeding completed successfully.
-```
-
-Снова перейдём на http://localhost и теперь увидим в ответе массив записей (пользователей) из таблицы `users`.
+Обновляем http://localhost и видим стартовую страницу Laravel.
 
 ## ToDo
 
