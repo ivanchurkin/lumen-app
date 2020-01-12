@@ -1,3 +1,10 @@
+# Docker-контейнер
+
+* Nginx (latest)
+* PostgreSQL (latest)
+* PHP (7.2)
+* Lumen (latest)
+
 ## Установка
 
 Клонируем репозиторий:
