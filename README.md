@@ -16,7 +16,7 @@
 Устанавливаем зависимости:
 ```
 ➜ cd ~/lumen-app
-➜ docker run --rm -v $(pwd)/source:/app composer install
+➜ docker run --rm -v $(pwd)/certs:/usr/local/share/ca-certificates -v $(pwd)/source:/app composer /bin/bash -c "update-ca-certificates && composer install"
 ```
 
 Определяем переменные окружения:

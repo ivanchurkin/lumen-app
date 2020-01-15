@@ -1,5 +1,9 @@
 FROM php:7.2-fpm
 
+COPY /certs /usr/local/share/ca-certificates
+
+RUN update-ca-certificates
+
 # Copy composer.lock and composer.json
 COPY /source/composer.lock /source/composer.json /var/www/
 
