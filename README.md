@@ -28,9 +28,9 @@
 
 ```
 DB_CONNECTION=pgsql
-DB_HOST=db
+DB_HOST=db.test
 DB_PORT=5432
-DB_DATABASE=lumen
+DB_DATABASE=laravel
 DB_USERNAME=postgres
 DB_PASSWORD=secret
 ```
@@ -57,8 +57,34 @@ Application key set successfully.
 
 Обновляем http://localhost и видим стартовую страницу Laravel.
 
+## Что дальше?
+
+Выполняем миграции.
+
+```
+➜ docker-compose exec app php artisan migrate
+```
+
+Генерируем клиента для авторизации пользователей.
+
+```
+➜ docker-compose exec app php artisan passport:client --password
+```
+
 ## ToDo
 
 Нужно (по моему мнению):
 
 - убрать из Dockerfile все ненужные зависимости (то что не используется и добавлять по мере необходимости)
+- добавить `npm` (nodejs) в контейнер `app`
+- добавить описание для
+
+## FAQ
+
+При выполнение команды:
+
+```
+➜ docker-compose exec app composer require { package_name_here }
+```
+
+Возникает ошибка. Проверьте права на папку `source/vendor`.
