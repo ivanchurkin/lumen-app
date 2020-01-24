@@ -2,7 +2,7 @@
 
 * Nginx (latest)
 * PostgreSQL (latest)
-* PHP (7.2)
+* PHP (7.3-fpm)
 * Laravel (latest)
 
 ## Установка
@@ -14,6 +14,7 @@
 ```
 
 Устанавливаем зависимости:
+
 ```
 ➜ cd ~/lumen-app
 ➜ docker run --rm -v $(pwd)/certs:/usr/local/share/ca-certificates -v $(pwd)/source:/app composer /bin/bash -c "update-ca-certificates && composer install"
@@ -65,10 +66,10 @@ Application key set successfully.
 ➜ docker-compose exec app php artisan migrate
 ```
 
-Генерируем клиента для авторизации пользователей.
+Выполняем инициализацию **Laravel Passport**:
 
 ```
-➜ docker-compose exec app php artisan passport:client --password
+➜ docker-compose exec app php artisan passport:install
 ```
 
 ## ToDo
@@ -77,7 +78,7 @@ Application key set successfully.
 
 - убрать из Dockerfile все ненужные зависимости (то что не используется и добавлять по мере необходимости)
 - добавить `npm` (nodejs) в контейнер `app`
-- добавить описание для
+- добавить описание для сборки клиентской части
 
 ## FAQ
 

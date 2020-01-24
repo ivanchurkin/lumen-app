@@ -1,4 +1,4 @@
-version: '3'
+version: "3.7"
 services:
 
   #PHP Service
@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: digitalocean.com/php
+    image: churkin/php
     container_name: app.test
     restart: unless-stopped
     tty: true
