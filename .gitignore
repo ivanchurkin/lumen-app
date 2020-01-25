@@ -1,2 +1,3 @@
 /certs/*
+/nginx/log/*
 !.gitkeep

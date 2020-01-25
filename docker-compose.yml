@@ -32,6 +32,7 @@ services:
     volumes:
       - ./source/:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./nginx/log/:/var/log/nginx/
     networks:
       - app-network
 
