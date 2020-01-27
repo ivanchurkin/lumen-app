@@ -15,6 +15,24 @@ use Illuminate\Http\Request;
 
 Route::post('/login', 'Api\LoginController@login');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:api')->group(function () {
+
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::prefix('groups')->group(function () {
+
+        Route::get('/', 'GroupController@index');
+
+        Route::post('/create', 'GroupController@store');
+
+        Route::get('/{group}', 'GroupController@show');
+
+        Route::put('/{group}', 'GroupController@update');
+
+        Route::delete('/{group}', 'GroupController@destroy');
+
+    });
+
 });

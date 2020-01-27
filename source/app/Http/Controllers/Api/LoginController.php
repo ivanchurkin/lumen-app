@@ -25,7 +25,7 @@ class LoginController extends Controller
         $response = $http->post('http://webserver.test/oauth/token', [
             'form_params' => [
                 'grant_type' => 'password',
-                'client_id' => '3',
+                'client_id' => '1',
                 'client_secret' => $credentials['secret'],
                 'username' => $credentials['email'],
                 'password' => $credentials['password'],
